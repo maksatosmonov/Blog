@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from article.views import homepage
+from article.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", homepage)
+    path("", homepage, name="homepage"),
+    path('authors/', authors, name="authors"),
+    path("users/", users, name="users-list"),
+    path("article/<int:id>/", article, name="article"),
+    path("article/add/", add_article, name="add-article"),
+    path("author/add/", add_author, name="add-author"),
 ]

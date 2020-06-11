@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{{ article.title }}</h2>
+    <div>{{ article.text }}</div>
+    <i>Author: {{ article.author }}</i>
+    <h3>Like: {{ article.likes }}</h3>
+    <ul>
+        {% for reader in article.readers.all %}
+            <li>{{ reader }}</li>
+    </ul>
+        {% endfor %}
+    <hr>
+    <form action="POST">
+        {% csrf_token %}
+        <button class="btn btn-lg btn-danger">Delet</button> 
+    </form>
+
+{% endblock %}

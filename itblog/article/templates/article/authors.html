@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <hr>
+    <table class="table table-dark table-hover table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Articles</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for author in authors_all %}
+            <tr>
+                <td>{{ author.name }}</td>
+                <td>{{ author.articles.count }}</td>
+            </tr> 
+            {% endfor %}
+    </tbody>
+    </table>
+   
+
+    
+{% endblock %}

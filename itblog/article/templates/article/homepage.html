@@ -1,29 +1,25 @@
-{%block content%}
+{% extends 'base.html' %}
 
-    <h2>Articles:</h2>
+{% block content %}
+
+<h2>Articles:</h2>
     <hr>
         {% for a in articles %}
-        <h3>{{ a.title}}</h3></i></h3>
+        <h3>
+            <a href="{% url 'article' a.id %}">
+            {{ a.title }}</a>
+        </h3>
         <div>{{ a.text}}</div>
-        <i>{{ a.author }}</i>
+        <div>
+            <a href="{% url 'authors' %}">
+            {{ a.author }}</a>
+        </div>
+
         <br>
         <b>Read count: {{ a.readers.count }}</b>
         <br>
+        <b>Like: {{ a.likes }}</b>
+         </hr>
         {% endfor %}
-    </hr>
 
-    <h3> Author articles {{ wind }}</h3>
-    <ol>
-    {% for article in wind.articles.all %}
-        <li>{{ article.title }}</li>
-    {% endfor %}  
-    </ol>
-    <hr>
-    <h3> Read by {{ wind }}</h3> 
-    <ol>
-    {% for article in wind.articles.all %}
-        <li>{{ article.title }}</li> 
-    {% endfor %}  
-    </ol>   
-       
 {% endblock %}
