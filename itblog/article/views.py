@@ -1,7 +1,7 @@
-from django.shortcuts import render, HttpResponse
-from article.models import Article, Author
+from django.shortcuts import render, HttpResponse, redirect
+from article.models import *
 from django.contrib.auth.models import User
-from .forms import ArticleForm, AuthorForm
+from .forms import *
 
 
 def homepage(request):
@@ -12,34 +12,60 @@ def homepage(request):
     {"articles":articles})
 
 def article(request, id):
-    if request.method =="POST":
-        article = Article.objects.get(id=id)
-        article.active = False
-        article.save()
-        return redirect(homepage) 
-
     article = Article.objects.get(id=id)
-    return render(request, "article/article.html", {"article": article})
+    if request.method == "POST":
+        if "delete_btn" in request.POST:
+            article.active = False
+            article.save()
+            return redirect(homepage)
+        elif "add_comment_btn" in request.POST:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = Comment()
+                comment.user = request.user
+                comment.article = article
+                comment.text = form.cleaned_data["text"]
+                comment.save()        
+
+    context = {}
+    context["article"] = article
+    context["form"] = CommentForm()
+    
+    return render(
+        request,
+        "article/article.html",
+        context
+    )
 
 
 def add_article(request):
     if request.method == "POST":
-        article = Article()
-        article.title = request.POST.get("title")
-        article.text = request.POST.get("text")
-        author_id = request.POST.get("author")
-        author = Author.objects.get(id=author_id)
-        article.author = author
-        article.save()
-        return render(request, "article/success.html")
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, "article/success.html")
 
     form = ArticleForm()
     return render(request, "article/add_article.html", {"form":form})
+
+def edit_article(request, id):
+    article = Article.objects.get(id=id)
+    
+    if request.method == "POST":
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            form.save()
+            return render(request,"article/success.html")
+
+    form = ArticleForm(instance=article)
+    return render(request, "article/add_article.html", {"form":form})
+
 
 def authors(request):
     context = {}
     context["authors_all"] = Author.objects.all()
     return render(request, "article/authors.html", context)
+
 
 def add_author(request):
     if request.method == "POST":
@@ -52,10 +78,35 @@ def add_author(request):
     return render(request, "article/add_author.html", {"form":form})
 
 
+def profile(request, id):
+    author = Author.objects.get(id=id)
+    return render(request, "article/profile.html", {"author": author})
+
 def users(request):
     context = {}
-    context["user_all"] = User.objects.all()
+    context["users_all"] = User.objects.all()
     return render(request, "article/users.html", context)
+
+
+def edit_comment(request, id):
+    comment = Comment.objects.get(id=id)
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return render(request, "article/success.html")
+
+    form = CommentForm(instance=comment)
+    return render(request, "article/comment.html", {"form":form})
+
+
+def delete_comment(request, id):
+    comment = Comment.objects.get(id=id)
+    comment.delete()
+    return render(request, "article/success.html")
+
+
+
 
 
 

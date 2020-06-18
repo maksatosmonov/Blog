@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 
 {% block content %}
 
-    <h3>Add author</h3>
-    <form method="POST">
+    <h3>Add author </h3>
+    <form method="POST" style="width: 50%; margin: auto;">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% bootstrap_form form %}
         <button>Confirm</button>
     </from>
 

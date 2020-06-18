@@ -16,13 +16,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from article.views import *
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", homepage, name="homepage"),
     path('authors/', authors, name="authors"),
-    path("users/", users, name="users-list"),
+    path("users/", users, name="users"),
     path("article/<int:id>/", article, name="article"),
+    path("article/edit/<int:id>/", edit_article, name="edit-article"),
     path("article/add/", add_article, name="add-article"),
     path("author/add/", add_author, name="add-author"),
-]
+    path("profile/<int:id>/", profile, name="profile"),
+    path("comment/edit/<int:id>/", edit_comment, name="edit-comment"),
+    path("comment/delete/<int:id>/", delete_comment, name="delete-comment"),
+
+    
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

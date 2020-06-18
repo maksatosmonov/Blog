@@ -1,19 +1,47 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 
 {% block content %}
     <h2>{{ article.title }}</h2>
     <div>{{ article.text }}</div>
     <i>Author: {{ article.author }}</i>
-    <h3>Like: {{ article.likes }}</h3>
+    <i>Like: {{ article.likes }}</i>
     <ul>
         {% for reader in article.readers.all %}
             <li>{{ reader }}</li>
     </ul>
         {% endfor %}
     <hr>
-    <form action="POST">
+    <p>{{ article.comments.count }}</p>
+    {% for commen in comment%}
+       <p> {{ commen.text}} </p>
+    {% endfor %}
+
+    <form method="POST">
         {% csrf_token %}
-        <button class="btn btn-lg btn-danger">Delet</button> 
+        <button name='delete_btn' class="btn btn-lg btn-danger">DELET</button> 
     </form>
+    <br>
+        <a href="{% url 'edit-article' article.id %}" class="btn btn-lg btn-warning">EDIT</a>
+    <hr>
+    <form  method="POST">
+        {% csrf_token %}
+       {% bootstrap_form form %}
+        <button name="add_comment_btn" class="btn btn-lg btn-info">ADD COMMENT</button>
+    </form>
+        
+    <hr>
+
+    <h3>COMMENTS</h3>
+    {% for comment in article.comments.all %}
+        <div>{{ comment.text }}</div>
+        <i>{{ comment.user.username }}</i>
+        <p>
+            <a href="{% url 'edit-comment' comment.id %}">EDIT COMMENT</a>|
+            <a href="{% url 'delete-comment' comment.id %}">DELETE COMMENT</a>|
+        </p> 
+        <hr>
+
+    {% endfor %}
 
 {% endblock %}
