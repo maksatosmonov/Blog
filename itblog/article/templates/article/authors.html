@@ -13,7 +13,7 @@
         {% for author in authors_all %}
             <tr>
                 <h2>
-                    <td>{{ author.name }}</td>
+                    <td><a href="{% url 'profile' author.id %}">{{ author.name }}</a></td>
                     <td>{{ author.articles.count }}</td>
                 </h2>
         {% endfor %}

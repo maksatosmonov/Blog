@@ -51,7 +51,12 @@
         </div>
       </li>    
   </ul>
-</div>  
+</div>
+<form class="form-inline" action="{% url 'homepage' %}" method="POST">
+  {% csrf_token %}
+  <input class="form-control mr-sm-2" type="text" name="key_word" placeholder="Search">
+  <button class="btn btn-dark">Search</button>
+</form>
 </nav>
 <br>
 {% block content %}

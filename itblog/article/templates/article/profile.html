@@ -3,10 +3,10 @@
 {% block content %}
   
 <div>
-    {% for author in authors_all %}
-
     <h3>NAME: {{ author.name }}</h3>
     <h3>PUBLICATIONS: {{ author.articles }}</h3>
-    {% endfor %}
+    {% if author.photo %}
+        <img src="{{ author.photo.url }}" width="50%">
+    {% endif %}
  </div>       
 {% endblock %}

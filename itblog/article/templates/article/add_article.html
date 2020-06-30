@@ -4,7 +4,7 @@
 {% block content %}
 
     <h3>ADD ARTICLE</h3>
-    <form method="POST" style="width: 70%; margin: auto;">
+    <form method="POST" enctype="multipart/form-data" style="width: 70%; margin: auto;">
         {% csrf_token %}
         
         {% bootstrap_form form %}

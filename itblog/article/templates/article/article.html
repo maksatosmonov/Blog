@@ -3,9 +3,16 @@
 
 {% block content %}
     <h2>{{ article.title }}</h2>
-    <div>{{ article.text }}</div>
+    {% if article.picture %}
+        <img width="30%" src="{{ article.picture.url }}">
+    {% endif %}
+    <hr>
+    <div>{{ article.text|escape|linebreaks }}</div>
     <i>Author: {{ article.author }}</i>
     <i>Like: {{ article.likes }}</i>
+    <div>Read: {{ article.views }}</div>
+    <div>Publication date: {{ article.publication_date|date:"d.m.Y" }}</div>
+    <div>Updated date: {{ article.updated_date }}</div>
     <ul>
         {% for reader in article.readers.all %}
             <li>{{ reader }}</li>
